@@ -1,22 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { server } from "../redux/store";
-import toast from "react-hot-toast";
+import { server } from "../../redux/store";
 
-const FeedbackForm = () => {
+const Feedback = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
     rating: 3,
+    item: "", 
   });
+
+
 
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
+  const [items, setItems] = useState(['blackForestCake','cheeseCake','pineAppleCake']); 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -26,12 +28,18 @@ const FeedbackForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    const token = localStorage.getItem("token");
     setSuccess("");
-
+    console.log(formData);
     try {
       const response = await axios.post(
         `${server}/feedback`,
-        formData
+        formData,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
       );
 
       setSuccess(
@@ -44,6 +52,7 @@ const FeedbackForm = () => {
         email: "",
         message: "",
         rating: 3,
+        item: "", 
       });
     } catch (err) {
       console.error(err.response?.data || err.message);
@@ -102,6 +111,30 @@ const FeedbackForm = () => {
                       resize: "vertical",
                     }}
                   ></textarea>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label style={{ fontWeight: "bold" }}>
+                    Item:
+                    <select
+                      name="item"
+                      value={formData.item}
+                      onChange={handleChange}
+                      style={{
+                        marginLeft: "1rem",
+                        padding: "0.3rem",
+                        fontWeight: "normal",
+                      }}
+                    >
+                      <option value="">Select Item</option>
+                      {items.map((item) => (
+                        <option key={item} value={item}>
+                          {item}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
                 </td>
               </tr>
               <tr>
@@ -166,4 +199,4 @@ const FeedbackForm = () => {
   );
 };
 
-export default FeedbackForm;
+export default Feedback;

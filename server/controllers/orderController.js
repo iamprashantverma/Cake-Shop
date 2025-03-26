@@ -1,4 +1,6 @@
 import { Order } from "../models/Order.js";
+import { Feedback } from '../models/FeedBack.js'
+
 import ErrorHandler from "../utils/ErrorHandler.js";
 import { instance } from "../server.js";
 import { asyncError } from "../middlewares/errorMiddleware.js";
@@ -174,3 +176,24 @@ export const processOrder = asyncError(async (req, res, next) => {
     message: "Status updated Successfully",
   });
 });
+
+  //  feedback
+  export const feedBack = asyncError(async (req, res, next) => {
+    const { name, email, message,item, rating } = req.body;
+    const userId = req.user.id; 
+
+    const feedback = new Feedback({
+      name,
+      email,
+      message,
+      rating,
+      item, 
+      userId,
+    });
+
+    await feedback.save();
+    res.status(201).json({
+      message: 'Thank you for your feedback!',
+      feedback,
+    });
+  });

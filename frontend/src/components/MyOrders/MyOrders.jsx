@@ -6,17 +6,17 @@ import { getMyOrders } from "../../redux/actions/orderAction";
 import Loader from "../layout/Loader";
 import toast from "react-hot-toast";
 
+
 const MyOrders = () => {
   const { orders, loading, error } = useSelector((state) => state.orders);
-
   const dispatch = useDispatch();
-
+  console.log(orders);
   useEffect(() => {
     if (error) {
       toast.error(error);
       dispatch({ type: "clearError" });
     }
-
+ 
     dispatch(getMyOrders());
   }, [dispatch]);
   return (
@@ -39,7 +39,7 @@ const MyOrders = () => {
               {orders &&
                 orders.map((i) => (
                   <tr key={i._id}>
-                    <td>{i._id}</td>
+                    <Link to={`/feedback`}> {i._id}</Link>
                     <td>{i.orderStatus}</td>
                     <td>
                       {i.orderItems.cheeseCake.quantity +

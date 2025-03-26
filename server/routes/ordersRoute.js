@@ -4,6 +4,7 @@ import {
   authorizeAdmin,
 } from "../middlewares/authMiddleware.js";
 import {
+  feedBack,
   getAdminOrders,
   getMyOrders,
   getOrderDetails,
@@ -22,6 +23,8 @@ router.post("/createorderonline", authenticateToken, placeOrderOnline);
 router.post("/paymentverification", authenticateToken, paymentVerifivcation);
 
 router.get("/myorders", authenticateToken, getMyOrders);
+
+router.post("/feedBack", authenticateToken, feedBack);
 
 router.get("/order/:id", authenticateToken, getOrderDetails);
 
