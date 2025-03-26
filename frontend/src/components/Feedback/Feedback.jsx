@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { server } from "../redux/store";
+import toast from "react-hot-toast";
 
 const FeedbackForm = () => {
   const [formData, setFormData] = useState({
@@ -28,9 +30,8 @@ const FeedbackForm = () => {
 
     try {
       const response = await axios.post(
-        "https://testingapp-mx0n.onrender.com/api/v1/admin/contact",
+        `${server}/feedback`,
         formData
-        // Removed Authorization header, assuming it’s not required
       );
 
       setSuccess(

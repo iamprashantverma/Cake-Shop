@@ -1,8 +1,8 @@
-// src/components/SpecialDatesForm.jsx
 import React, { useState } from "react";
 import axios from "axios";
-import "../styles/specialDatesForms.scss"; // ✅ Correct if file is in /styles folder
-
+import "../styles/specialDatesForms.scss"; 
+import { server } from "../redux/store";
+import toast from "react-hot-toast";
 
 const SpecialDatesForm = () => {
   const [formData, setFormData] = useState({
@@ -19,21 +19,20 @@ const SpecialDatesForm = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-
+      console.log(formData.date);
       const res = await axios.post(
-        "/api/v1/user/special-dates",
+        `${server}/special-dates`,
         formData,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `${token}`,
           },
         }
       );
-
-      alert(res.data.message || "Special date saved!");
+      toast.success(res.data.message || "Special date saved!");
       setFormData({ occasion: "", date: "", description: "" });
     } catch (err) {
-      alert(err.response?.data?.message || "Something went wrong");
+      toast.error(err.response?.data?.message || "Something went wrong");
     }
   };
 

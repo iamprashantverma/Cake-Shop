@@ -206,8 +206,7 @@ export const adminForm = asyncError(async (req, res, next) => {
 // 🎉 Save Special Date
 export const saveSpecialDate = asyncError(async (req, res, next) => {
   const { occasion, date, description } = req.body;
-  const userId = req.user._id;
-
+  const userId = req.user.id;
   const user = await User.findById(userId);
   user.specialDates.push({ occasion, date, description });
   await user.save();

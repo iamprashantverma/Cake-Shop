@@ -25,7 +25,6 @@ router.get("/myorders", authenticateToken, getMyOrders);
 
 router.get("/order/:id", authenticateToken, getOrderDetails);
 
-// Add Admin Middleware
 router.get("/admin/orders", authenticateToken, authorizeAdmin, getAdminOrders);
 
 router.get("/admin/order/:id", authenticateToken, authorizeAdmin, processOrder);
